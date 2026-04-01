@@ -30,8 +30,8 @@ const LoginPage = () => {
 
     if (!values.password) {
       errors.password = "Passwort erforderlich";
-    } else if (values.password.length < 6) {
-      errors.password = "Passwort mindestens 6 Zeichen";
+    } else if (values.password.length < 4) {
+      errors.password = "Passwort mindestens 4 Zeichen";
     }
 
     return errors;
