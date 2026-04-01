@@ -1,9 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
-import MoviesPage from "./MoviesPage";
 import LoginPage from './loginPage'
 import { isLoggedIn } from './authenticationService';
 import type { JSX } from 'react';
+import MoviesPage from './MoviesPage';
+import MovieDetailPage from './movieDetailPage';
+
 
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
@@ -17,14 +19,26 @@ function App() {
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+
+        <Route
+          path="/movies/:id"
+          element={
+            <PrivateRoute>
+              <MovieDetailPage />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/movies"
           element={
             <PrivateRoute>
-              <MoviesPage/>
+              <MoviesPage />
             </PrivateRoute>
           }
         />
+
+        <Route path="/" element={<Navigate to="/movies" />} />
         <Route path="*" element={<Navigate to="/movies" />} />
       </Routes>
     </>

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getMovies } from "./movieService";
 import type { Movie } from "./movieService";
 
 const MoviesPage = () => {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,11 +35,13 @@ const MoviesPage = () => {
         {movies.map((movie) => (
           <div
             key={movie.id}
+            onClick={() => navigate(`/movies/${movie.id}`)}
             style={{
               border: "1px solid #ccc",
               borderRadius: "8px",
               padding: "10px",
               width: "200px",
+              cursor: "pointer",
             }}
           >
             <img
