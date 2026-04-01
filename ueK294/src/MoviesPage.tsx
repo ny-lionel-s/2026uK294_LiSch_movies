@@ -30,7 +30,23 @@ const MoviesPage = () => {
 
   return (
     <div style={{ maxWidth: "800px", margin: "20px auto" }}>
-      <h2>Movies</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h1>Movies</h1>
+        <button 
+          onClick={() => navigate("/movies/create")} 
+          style={{ 
+            padding: "10px 20px", 
+            cursor: "pointer",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            fontSize: "16px"
+          }}
+        >
+          + Neuer Movie
+        </button>
+      </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
         {movies.map((movie) => (
           <div

@@ -1,11 +1,11 @@
-// src/pages/MovieDetailPage.tsx
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { getMovieById } from "./movieService";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { getMovieById, deleteMovie } from "./movieService";
 import type { Movie } from "./movieService";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState<Movie | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,6 +31,20 @@ const MovieDetailPage = () => {
 
     fetchMovie();
   }, [id]);
+
+  const handleDelete = async () => {
+    if (!id) return;
+    
+    const confirmed = window.confirm(`Möchten Sie "${movie?.title}" wirklich löschen?`);
+    if (!confirmed) return;
+
+    try {
+      await deleteMovie(Number(id));
+      navigate("/movies");
+    } catch (err) {
+      setError("Fehler beim Löschen des Movies");
+    }
+  };
 
   if (loading) return <div>Lädt...</div>;
   if (error) return <div style={{ color: "red" }}>{error}</div>;
@@ -75,10 +89,25 @@ const MovieDetailPage = () => {
             <strong>Rotten Tomatoes:</strong> {movie.rottenTomatoesRating}%
           </p>
 
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
             <Link to={`/movies/${movie.id}/edit`}>
-              <button>Bearbeiten</button>
+              <button style={{ padding: "8px 16px", cursor: "pointer" }}>
+                Bearbeiten
+              </button>
             </Link>
+            <button 
+              onClick={handleDelete}
+              style={{ 
+                padding: "8px 16px", 
+                cursor: "pointer",
+                backgroundColor: "#dc3545",
+                color: "white",
+                border: "none",
+                borderRadius: "4px"
+              }}
+            >
+              Löschen
+            </button>
           </div>
         </div>
       </div>

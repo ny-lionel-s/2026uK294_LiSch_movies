@@ -5,6 +5,8 @@ import { isLoggedIn } from './authenticationService';
 import type { JSX } from 'react';
 import MoviesPage from './MoviesPage';
 import MovieDetailPage from './movieDetailPage';
+import MovieEditPage from './editMoviePage';
+import MovieCreatePage from './postMoviePage';
 
 
 
@@ -19,6 +21,24 @@ function App() {
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+
+        <Route
+          path="/movies/create"
+          element={
+            <PrivateRoute>
+              <MovieCreatePage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/movies/:id/edit"
+          element={
+            <PrivateRoute>
+              <MovieEditPage />
+            </PrivateRoute>
+          }
+        />
 
         <Route
           path="/movies/:id"
