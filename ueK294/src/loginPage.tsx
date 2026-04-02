@@ -7,18 +7,16 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       setError(null);
       await login(values);
-      navigate("/movies"); 
+      navigate("/movies");
     } catch (err: any) {
       setError(err.message || "Fehler beim Login");
     }
   };
 
-  
   const validate = (values: { email: string; password: string }) => {
     const errors: { email?: string; password?: string } = {};
 

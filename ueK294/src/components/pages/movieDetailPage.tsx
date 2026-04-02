@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { getMovieById, deleteMovie } from "./movieService";
-import type { Movie } from "./movieService";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { getMovieById, deleteMovie } from "../../movieService";
+import type { Movie } from "../../movieService";
+import PageLayout from "../organisms/PageLayout";
+import BackLink from "../atoms/BackLink";
+import Button from "../atoms/Button";
+import MovieInfo from "../molecules/MovieInfo";
+import ErrorText from "../atoms/ErrorText";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
@@ -47,12 +52,12 @@ const MovieDetailPage = () => {
   };
 
   if (loading) return <div>Lädt...</div>;
-  if (error) return <div style={{ color: "red" }}>{error}</div>;
+  if (error) return <ErrorText>{error}</ErrorText>;
   if (!movie) return <div>Movie nicht gefunden</div>;
 
   return (
-    <div style={{ maxWidth: "900px", margin: "20px auto" }}>
-      <Link to="/movies">← Zurück zur Liste</Link>
+    <PageLayout>
+      <BackLink to="/movies">← Zurück zur Liste</BackLink>
 
       <h2>{movie.title}</h2>
 
@@ -64,54 +69,26 @@ const MovieDetailPage = () => {
         />
 
         <div>
-          <p>
-            <strong>Release Date:</strong> {movie.releaseDate}
-          </p>
-          <p>
-            <strong>Genre:</strong> {movie.majorGenre}
-          </p>
-          <p>
-            <strong>MPAA Rating:</strong> {movie.mpaaRating}
-          </p>
-          <p>
-            <strong>Running Time:</strong> {movie.runningTimeMin} min
-          </p>
-          <p>
-            <strong>Director:</strong> {movie.director}
-          </p>
-          <p>
-            <strong>Distributor:</strong> {movie.distributor}
-          </p>
-          <p>
-            <strong>IMDB Rating:</strong> {movie.imdbRating}
-          </p>
-          <p>
-            <strong>Rotten Tomatoes:</strong> {movie.rottenTomatoesRating}%
-          </p>
+          <MovieInfo label="Release Date" value={movie.releaseDate} />
+          <MovieInfo label="Genre" value={movie.majorGenre} />
+          <MovieInfo label="MPAA Rating" value={movie.mpaaRating} />
+          <MovieInfo label="Running Time" value={`${movie.runningTimeMin} min`} />
+          <MovieInfo label="Director" value={movie.director} />
+          <MovieInfo label="Distributor" value={movie.distributor} />
+          <MovieInfo label="IMDB Rating" value={movie.imdbRating} />
+          <MovieInfo label="Rotten Tomatoes" value={`${movie.rottenTomatoesRating}%`} />
 
           <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
             <Link to={`/movies/${movie.id}/edit`}>
-              <button style={{ padding: "8px 16px", cursor: "pointer" }}>
-                Bearbeiten
-              </button>
+              <Button variant="secondary">Bearbeiten</Button>
             </Link>
-            <button 
-              onClick={handleDelete}
-              style={{ 
-                padding: "8px 16px", 
-                cursor: "pointer",
-                backgroundColor: "#dc3545",
-                color: "white",
-                border: "none",
-                borderRadius: "4px"
-              }}
-            >
+            <Button onClick={handleDelete} variant="danger">
               Löschen
-            </button>
+            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 

@@ -3,27 +3,23 @@ import './App.css'
 import LoginPage from './loginPage'
 import { isLoggedIn } from './authenticationService';
 import type { JSX } from 'react';
-import MoviesPage from './MoviesPage';
-import MovieDetailPage from './movieDetailPage';
-import MovieEditPage from './editMoviePage';
-import MovieCreatePage from './postMoviePage';
-
-
+import MoviesPage from './components/pages/MoviesPage';
+import MovieDetailPage from './components/pages/movieDetailPage';
+import MovieEditPage from './components/pages/editMoviePage';
+import MovieCreatePage from './components/pages/postMoviePage';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   return isLoggedIn() ? children : <Navigate to="/login" />;
 };
 
 function App() {
-  
-
   return (
     <>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
 
         <Route
-          path="/movies/create"
+          path="/movies/new"
           element={
             <PrivateRoute>
               <MovieCreatePage />
