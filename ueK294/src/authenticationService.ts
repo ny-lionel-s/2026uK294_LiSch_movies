@@ -1,32 +1,31 @@
-import api from "./api";
+import { clearToken, getToken, isLoggedIn, saveToken } from "./AuthStorage";
+import api from "./Api";
 
 export type AuthData = {
   email: string;
   password: string;
 };
 
-export type AuthResponse = {
-  token: string;
+type LoginResponse = {
+  accessToken?: string;
 };
 
-const TOKEN_KEY = "token";
+export const login = async (values: AuthData): Promise<LoginResponse> => {
+  const response = await api.post<LoginResponse>("/login", values);
+  const token = response.data.accessToken;
 
-export const login = async (values: { email: string; password: string }) => {
-  const res = await api.post("/login", values);
-  if (!res.data.accessToken) {
+  if (!token) {
     throw new Error("Kein Token erhalten");
   }
-  localStorage.setItem("token", res.data.accessToken);
-  return res.data;
+
+  saveToken(token);
+
+  return response.data;
 };
 
 export const logout = (): void => {
-  localStorage.removeItem(TOKEN_KEY);
+  clearToken();
   window.location.href = "/login";
 };
 
-export const getToken = (): string | null => {
-  return localStorage.getItem(TOKEN_KEY);
-};
-
-export const isLoggedIn = () => !!localStorage.getItem("token");
+export { getToken, isLoggedIn };

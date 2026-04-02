@@ -1,24 +1,42 @@
+import { Form, Formik } from "formik";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Formik, Form, Field } from "formik";
-import { login } from "./authenticationService";
+import Button from "./Components/Atoms/Button";
+import ErrorText from "./Components/Atoms/ErrorText";
+import FormField from "./Components/Molecules/FormField";
+import PageLayout from "./Components/Organisms/PageLayout";
+import { login } from "./AuthenticationService";
+import type { AuthData } from "./AuthenticationService";
+
+const initialValues: AuthData = {
+  email: "",
+  password: "",
+};
+
+const getErrorMessage = (error: unknown): string => {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return "Fehler beim Login";
+};
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (values: { email: string; password: string }) => {
+  const handleSubmit = async (values: AuthData) => {
     try {
       setError(null);
       await login(values);
       navigate("/movies");
-    } catch (err: any) {
-      setError(err.message || "Fehler beim Login");
+    } catch (loginError) {
+      setError(getErrorMessage(loginError));
     }
   };
 
-  const validate = (values: { email: string; password: string }) => {
-    const errors: { email?: string; password?: string } = {};
+  const validate = (values: AuthData) => {
+    const errors: Partial<Record<keyof AuthData, string>> = {};
 
     if (!values.email) {
       errors.email = "E-Mail erforderlich";
@@ -36,34 +54,45 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page" style={{ maxWidth: "400px", margin: "50px auto" }}>
+    <PageLayout maxWidth="420px">
       <h2>Login</h2>
-      {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+      {error && (
+        <div style={{ marginBottom: "12px" }}>
+          <ErrorText>{error}</ErrorText>
+        </div>
+      )}
 
-      <Formik
-        initialValues={{ email: "", password: "" }}
+      <Formik<AuthData>
+        initialValues={initialValues}
         validate={validate}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
-          <Form>
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="email">E-Mail</label>
-              <Field name="email" type="email" />
-              {errors.email && touched.email && <div style={{ color: "red" }}>{errors.email}</div>}
-            </div>
+        {({ errors, isSubmitting, touched }) => (
+          <Form style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <FormField
+              autoComplete="email"
+              error={errors.email}
+              label="E-Mail"
+              name="email"
+              touched={touched.email}
+              type="email"
+            />
+            <FormField
+              autoComplete="current-password"
+              error={errors.password}
+              label="Passwort"
+              name="password"
+              touched={touched.password}
+              type="password"
+            />
 
-            <div style={{ marginBottom: "10px" }}>
-              <label htmlFor="password">Passwort</label>
-              <Field name="password" type="password" />
-              {errors.password && touched.password && <div style={{ color: "red" }}>{errors.password}</div>}
-            </div>
-
-            <button type="submit">Login</button>
+            <Button style={{ alignSelf: "flex-start" }} type="submit">
+              {isSubmitting ? "Logge ein..." : "Login"}
+            </Button>
           </Form>
         )}
       </Formik>
-    </div>
+    </PageLayout>
   );
 };
 

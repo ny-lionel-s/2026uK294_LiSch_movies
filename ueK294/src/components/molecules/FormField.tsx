@@ -1,29 +1,42 @@
 import React from "react";
 import { Field } from "formik";
-import Label from "../atoms/Label";
-import ErrorText from "../atoms/ErrorText";
+import ErrorText from "../Atoms/ErrorText";
+import Input from "../Atoms/Input";
+import Label from "../Atoms/Label";
 
 type FormFieldProps = {
-  name: string;
+  autoComplete?: string;
+  error?: string;
   label: string;
+  name: string;
+  placeholder?: string;
   type?: string;
   step?: string;
-  error?: string;
   touched?: boolean;
 };
 
 const FormField: React.FC<FormFieldProps> = ({
+  autoComplete,
+  error,
   name,
   label,
+  placeholder,
   type = "text",
   step,
-  error,
   touched,
 }) => {
   return (
     <div style={{ marginBottom: "15px" }}>
       <Label htmlFor={name}>{label}</Label>
-      <Field name={name} type={type} step={step} />
+      <Field
+        as={Input}
+        autoComplete={autoComplete}
+        id={name}
+        name={name}
+        placeholder={placeholder}
+        step={step}
+        type={type}
+      />
       {error && touched && <ErrorText>{error}</ErrorText>}
     </div>
   );

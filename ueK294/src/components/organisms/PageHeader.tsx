@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../atoms/Button";
+import Button from "../Atoms/Button";
 import { useNavigate } from "react-router-dom";
 
 type PageHeaderProps = {

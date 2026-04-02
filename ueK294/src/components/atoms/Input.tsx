@@ -1,16 +1,22 @@
 import React from "react";
 
 type InputProps = {
+  autoComplete?: string;
+  id?: string;
   name: string;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   type?: string;
-  value?: string | number;
+  value?: number | readonly string[] | string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   step?: string;
 };
 
 const Input: React.FC<InputProps> = ({
+  autoComplete,
+  id,
   name,
+  onBlur,
   type = "text",
   value,
   onChange,
@@ -19,7 +25,10 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <input
+      autoComplete={autoComplete}
+      id={id ?? name}
       name={name}
+      onBlur={onBlur}
       type={type}
       value={value}
       onChange={onChange}

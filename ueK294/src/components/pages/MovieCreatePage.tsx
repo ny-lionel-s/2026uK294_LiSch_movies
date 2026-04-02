@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createMovie } from "../../movieService";
-import type { Movie } from "../../movieService";
-import PageLayout from "../organisms/PageLayout";
-import BackLink from "../atoms/BackLink";
-import MovieForm from "../organisms/MovieForm";
-import ErrorText from "../atoms/ErrorText";
-
-type MovieFormValues = Omit<Movie, "id">;
+import { createMovie } from "../../MovieService";
+import type { MovieFormValues } from "../../MovieService";
+import BackLink from "../Atoms/BackLink";
+import ErrorText from "../Atoms/ErrorText";
+import MovieForm from "../Organisms/MovieForm";
+import PageLayout from "../Organisms/PageLayout";
 
 const MovieCreatePage = () => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { getMovies } from "../../movieService";
-import type { Movie } from "../../movieService";
-import PageLayout from "../organisms/PageLayout";
-import PageHeader from "../organisms/PageHeader";
-import MovieCard from "../organisms/MovieCard";
-import ErrorText from "../atoms/ErrorText";
+import { getMovies } from "../../MovieService";
+import type { Movie } from "../../MovieService";
+import ErrorText from "../Atoms/ErrorText";
+import MovieCard from "../Organisms/MovieCard";
+import PageHeader from "../Organisms/PageHeader";
+import PageLayout from "../Organisms/PageLayout";
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -17,7 +17,7 @@ const MoviesPage = () => {
         setLoading(true);
         const data = await getMovies();
         setMovies(data);
-      } catch (err: any) {
+      } catch {
         setError("Fehler beim Laden der Movies");
       } finally {
         setLoading(false);

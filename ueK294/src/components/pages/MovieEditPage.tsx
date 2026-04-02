@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getMovieById, updateMovie } from "../../movieService";
-import type { Movie } from "../../movieService";
-import PageLayout from "../organisms/PageLayout";
-import BackLink from "../atoms/BackLink";
-import MovieForm from "../organisms/MovieForm";
-import ErrorText from "../atoms/ErrorText";
-
-type MovieFormValues = Omit<Movie, "id">;
+import { getMovieById, updateMovie } from "../../MovieService";
+import type { MovieFormValues } from "../../MovieService";
+import BackLink from "../Atoms/BackLink";
+import ErrorText from "../Atoms/ErrorText";
+import MovieForm from "../Organisms/MovieForm";
+import PageLayout from "../Organisms/PageLayout";
 
 const MovieEditPage = () => {
   const { id } = useParams();

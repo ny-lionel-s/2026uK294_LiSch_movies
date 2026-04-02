@@ -1,14 +1,12 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import FormField from "../molecules/FormField";
-import Button from "../atoms/Button";
-import type { Movie } from "../../movieService";
-
-type MovieFormValues = Omit<Movie, "id">;
+import type { MovieFormValues } from "../../MovieService";
+import Button from "../Atoms/Button";
+import FormField from "../Molecules/FormField";
 
 type MovieFormProps = {
   initialValues: MovieFormValues;
-  onSubmit: (values: MovieFormValues) => void;
+  onSubmit: (values: MovieFormValues) => Promise<void> | void;
   submitButtonText?: string;
 };
 
@@ -41,7 +39,12 @@ const MovieForm: React.FC<MovieFormProps> = ({
   };
 
   return (
-    <Formik initialValues={initialValues} validate={validate} onSubmit={onSubmit} enableReinitialize>
+    <Formik<MovieFormValues>
+      enableReinitialize
+      initialValues={initialValues}
+      onSubmit={onSubmit}
+      validate={validate}
+    >
       {({ errors, touched }) => (
         <Form style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <FormField
